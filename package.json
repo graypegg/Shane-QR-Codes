@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "cd web; npm run start",
+    "build": "cd web; npm run build",
+    "test": "cd web; npm run test",
+    "coverage": "cd web; npm run test coverage",
+    "server:start": "cd api; touch ./nohup.out; nohup docker-compose up & tail -f ./nohup.out",
+    "server:stop": "cd api; docker-compose stop"
+  }
+}
