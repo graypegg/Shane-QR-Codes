@@ -1,0 +1,18 @@
+version: '3'
+services:
+  web:
+    environment:
+      - ENV=production
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGPASSWORD=ailurus
+      - PGDATABASE=qr
+      - PGPORT=5432
+    build: ./web
+    ports:
+        - "5000:5000"
+  postgres:
+    environment:
+      - POSTGRES_PASSWORD=ailurus
+      - POSTGRES_DB=qr
+    build: ./postgres
