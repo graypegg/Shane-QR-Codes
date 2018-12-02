@@ -1,0 +1,7 @@
+[
+  { "name": "red", "hex": "#FF0000" },
+  { "name": "blue", "hex": "#0000FF" },
+  { "name": "green", "hex": "#00FF00" },
+  { "name": "grey", "hex": "#BBBBBB" },
+  { "name": "pink", "hex": "#ff9aee" }
+]
