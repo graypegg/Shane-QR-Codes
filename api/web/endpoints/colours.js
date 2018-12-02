@@ -8,16 +8,16 @@ module.exports = (app, pool) => {
     }
   )
 
-  app.post('/colours',
+  app.post('/colours/:colourId',
     jwt({ secret: 'ailurus' }),
     async (req, res) => {
-      if (req.body.colour && colours[req.body.colour]) {
+      if (req.params.colourId && colours[parseInt(req.params.colourId)]) {
         try {
           await pool.query(
             `
               INSERT INTO "colours"("colour", "user_id") VALUES($1, $2) RETURNING "id";
             `, [
-              req.body.colour,
+              req.params.colourId,
               req.user.id
             ]
           ).then((response) => {
@@ -25,7 +25,7 @@ module.exports = (app, pool) => {
           });
         } catch (e) {
           console.error(e);
-          if (e.code === '23505') res.status(400).json({ message: `colour #${req.body.colour} already selected for this user` });
+          if (e.code === '23505') res.status(400).json({ message: `colour #${req.params.colourId} already selected for this user` });
           else res.status(500).json({ message: 'Something went horribly wrong' });
         }
       } else {
