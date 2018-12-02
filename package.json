@@ -5,6 +5,7 @@
     "test": "cd web; npm run test",
     "coverage": "cd web; npm run test coverage",
     "server:start": "cd api; touch ./nohup.out; nohup docker-compose up & tail -f ./nohup.out",
+    "server:build": "cd api/web; docker-compose build",
     "server:stop": "cd api; docker-compose stop"
   }
 }

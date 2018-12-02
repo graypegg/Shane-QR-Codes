@@ -1,5 +1,8 @@
 const jwt = require('express-jwt');
 const colours = require('../colours.json');
+const fs = require('fs');
+const path = require('path');
+const jwtKey = fs.readFileSync(path.resolve(__dirname, '../jwt.key'), 'utf8');
 
 module.exports = (app, pool) => {
   app.get('/colours.json',
@@ -9,7 +12,7 @@ module.exports = (app, pool) => {
   )
 
   app.post('/colours/:colourId',
-    jwt({ secret: 'ailurus' }),
+    jwt({ secret: jwtKey }),
     async (req, res) => {
       if (req.params.colourId && colours[parseInt(req.params.colourId)]) {
         try {
@@ -35,7 +38,7 @@ module.exports = (app, pool) => {
   )
 
   app.delete('/colours/:colourId',
-    jwt({ secret: 'ailurus' }),
+    jwt({ secret: jwtKey }),
     async (req, res) => {
       if (req.params.colourId) {
         try {

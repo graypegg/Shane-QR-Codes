@@ -1,5 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
+const jwtKey = fs.readFileSync(path.resolve(__dirname, '../jwt.key'), 'utf8');
 
 module.exports = (app, pool) => {
   app.post('/login', async (req, res) => {
@@ -20,15 +23,19 @@ module.exports = (app, pool) => {
           req.body.username
         ]
       ).then((response) => {
-        if (response.rows.length < 1) throw { detail: 'password wrong' };
+        if (response.rows.length < 1) throw { detail: 'wrong username' };
         else return response;
       }).then(async ({ rows }) => {
-        bcrypt.compare(req.body.password, rows[0].password, function (err, validPassword) {
+        bcrypt.compare(req.body.password, rows[0].password, (err, validPassword) => {
           if (err) throw err;
           if (validPassword) {
-            const token = jwt.sign({ id: rows[0].id, username: rows[0].username }, 'ailurus');
+            const token = jwt.sign({ id: rows[0].id, username: rows[0].username }, jwtKey);
             res.json({ token });
-          }
+          } else {
+            res.status(400).json({
+              message: 'wrong password'
+            })
+          };
         });
       });
     } catch (e) {

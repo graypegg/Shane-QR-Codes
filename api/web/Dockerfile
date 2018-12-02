@@ -4,6 +4,8 @@ COPY ./ /home/node/
 
 WORKDIR '/home/node'
 
+RUN rm -Rf /home/node/node_modules
+
 EXPOSE 5000
 
 RUN npm install
