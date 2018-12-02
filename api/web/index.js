@@ -6,6 +6,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const app = express()
 
+const endpoints = require('./endpoints');
+
 /** Register Middleware  */
 app.use(cors())
 app.use(bodyParser.json())
@@ -37,39 +39,8 @@ if (process.env['ENV'] === 'production') {
     port: 5432
   })
 }
-async function query (...args) {
-  const res = await pool.query(...args)
-  return res
-}
 
-/** Router */
-app.get('/', (req, res) => {
-  query(`
-    SELECT *
-    FROM saves
-    ORDER BY id
-    DESC LIMIT 1;
-  `).then((response) => {
-    res.json(response.rows[0])
-  }).catch((error) => {
-    console.error(error);
-    res.status(500).json({ message: 'DB did something weird' })
-  })
-})
-
-app.post('/', (req, res) => {
-  const data = JSON.stringify(req.body)
-  query(`
-    INSERT INTO saves (data)
-    VALUES ($1)
-    RETURNING id;
-  `, [data]).then((response) => {
-    res.json({ id: response.rows[0].id })
-  }).catch((error) => {
-    console.error(error);
-    res.status(500).json({ message: 'DB did something weird' })
-  })
-})
+endpoints(app, pool);
 
 /** Bootstrap */
 app.listen(5000, () => console.log('Example app listening on port 5000!'))

@@ -12,6 +12,5 @@ CREATE TABLE users (
 CREATE TABLE colours (
     id SERIAL PRIMARY KEY,
     colour integer,
-    user integer,
-    FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
+    user_id integer REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
