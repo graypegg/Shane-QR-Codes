@@ -14,3 +14,5 @@ CREATE TABLE colours (
     colour integer,
     user_id integer REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE UNIQUE INDEX colours_with_users ON colours(colour int4_ops,user_id int4_ops);
