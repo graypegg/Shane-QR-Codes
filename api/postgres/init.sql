@@ -5,7 +5,7 @@
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username varchar,
+    username varchar UNIQUE,
     password varchar
 );
 

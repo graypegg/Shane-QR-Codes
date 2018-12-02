@@ -1,5 +1,6 @@
 const routes = [
-  require('./new')
+  require('./new'),
+  require('./login')
 ]
 
 /**

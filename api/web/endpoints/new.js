@@ -12,12 +12,9 @@ module.exports = (app, pool) => {
     }
     try {
       const hash = await new Promise((resolve, reject) => {
-        bcrypt.genSalt(10, (errSalt, salt) => {
-          if (errSalt) reject(errSalt);
-          else bcrypt.hash(req.body.password, salt, (errHash, hash) => {
-            if (errHash) reject(errHash);
-            else resolve(hash);
-          });
+        bcrypt.hash(req.body.password, 10, function (err, hash) {
+          if (err) reject(err);
+          else resolve(hash);
         });
       });
       await pool.query(
@@ -31,8 +28,11 @@ module.exports = (app, pool) => {
         res.json({ id: response.rows[0].id })
       });
     } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.toString() })
+      res.status(500).json({
+        message: (
+          e.detail || 'Something wen\'t horribly wrong.'
+        )
+      })
     }
   })
 }
